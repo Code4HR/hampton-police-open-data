@@ -129,7 +129,7 @@ made with &#9829; by
       layer.bindPopup("DISTRICT:" + String(feature.properties.DISTRICT));
     }
     */
-    var existing = new L.GeoJSON.AJAX("https://data.hampton.gov/resource/r23z-sjdf.json", {
+    var crime = new L.GeoJSON.AJAX("https://data.hampton.gov/resource/r23z-sjdf.json", {
         style: crimeStyle /*,
         onEachFeature: popUp */
     });
@@ -153,9 +153,9 @@ made with &#9829; by
         });
 
     var map = L.map('map', {
-      center: [38.0242, -78.494],
+      center: [37.0332, -76.3783],
       zoom: 8,
-      layers: [CartoDB_DarkMatter, existing]
+      layers: [CartoDB_DarkMatter, crime]
     });
 
     var sidebar = L.control.sidebar('sidebar', {
@@ -173,10 +173,7 @@ made with &#9829; by
     };
 
     var overlayMaps = {
-      "Existing": existing,
-      "Govenors": govenor,
-      "Intervenors 1": intervenors1,
-
+      "Existing": crime
     };
 
     L.control.layers(baseMaps, overlayMaps, {
