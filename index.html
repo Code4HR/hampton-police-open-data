@@ -129,10 +129,15 @@ made with &#9829; by
       layer.bindPopup("DISTRICT:" + String(feature.properties.DISTRICT));
     }
     */
-    var crime = new L.GeoJSON.AJAX("https://data.hampton.gov/resource/r23z-sjdf.json", {
-        style: crimeStyle /*,
-        onEachFeature: popUp */
+    var featureLayer = L.mapbox.featureLayer()
+    .loadURL('https://data.hampton.gov/resource/r23z-sjdf.json')
+    .addTo(map);
+
+  /*  var crime = new L.GeoJSON.AJAX("https://data.hampton.gov/resource/r23z-sjdf.json", {
+        style: crimeStyle,
+        onEachFeature: popUp
     });
+  */
   /*    govenor = new L.GeoJSON.AJAX("data/govenor.geojson", {
         style: govenorStyle,
         onEachFeature: popUp
