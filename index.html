@@ -1,213 +1,206 @@
+<!DOCTYPE html>
 <html>
 
 <head>
-  <title>Hampton Crime Data</title>
-  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
-  <link rel="stylesheet" href="src/L.Control.Sidebar.css" />
-  <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css" />
-  <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
-  <script src="src/L.Control.Sidebar.js"></script>
-  <script src="src/leaflet.ajax.min.js"></script>
+  <title>Hampton Police Open Data</title>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <link rel="shortcut icon" href="http://cartodb.com/assets/favicon.ico" />
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.js"></script>
+  <style>
+    html,
+    body,
+    #map {
+      height: 100%;
+      padding: 0;
+      margin: 0;
+    }
 
-<style>
-  #map {
-    height: 100%
-  }
-</style>
+    #boxes .window {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 440px;
+      height: 200px;
+      display: none;
+      z-index: 9999;
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
+    }
+
+    .window h1 {
+      font-size: 14pt;
+    }
+
+    .window h2 {
+      font-size: 11pt;
+    }
+
+    .window h3 {
+      font-size: 9pt;
+      color: #fff;
+    }
+
+    .window a {
+      color: #fff;
+    }
+
+    #boxes #dialog {
+      width: 750px;
+      height: 300px;
+      padding: 10px;
+      box-sizing: border-box;
+      border-color: #fff;
+      border-width: medium;
+      padding: 8px 24px;
+      font-family: "Lucida Console", Monaco, monospace;
+      font-size: 10pt;
+      color: #fff;
+      text-align: center;
+      text-shadow: 1px 1px #000;
+      background: rgba(200, 200, 200, 0.8);
+      box-shadow: 0 1px 7px rgba(0, 0, 0, 0.65);
+      -webkit-border-radius: 4px;
+      border-radius: 4px;
+    }
+
+    #popupfoot {
+      font-size: 16pt;
+      position: absolute;
+      bottom: 25px;
+      width: 250px;
+      left: 250px;
+    }
+
+    .btn {
+      font-family: Arial;
+      color: #ffffff;
+      font-size: 14px;
+      background: #000000;
+      padding: 10px 20px 10px 20px;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      background: #363636;
+      text-decoration: none;
+    }
+
+    .a {
+      color: #ffffff;
+    }
+  </style>
+
+  <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
 </head>
 
 <body>
-<style>
-    .leaflet-sidebar > .leaflet-control h1 {
-      font-size: 20pt;
-    }
+  <div id="boxes">
+    <div id="dialog" class="window">
+      <h1>Hey!</h1>
+      <h2>The City of Hampton Police Department recently created an
+        <br> open data page as part of the
+        <a target="blank" href="https://www.whitehouse.gov/blog/2015/05/18/launching-police-data-initiative">White House Police Data Initiative.</a></br>
+        <br>We thought it'd be super helpful to put it on a map,
+        <br>so you can see crimes in the context of location.</h2>
+      <h3>made with &#9829; by
+        <br><a target="blank" href="http://www.code4hr.org">Code for Hampton Roads</a> +
+        <a target="blank" href="https://twitter.com/maptimehrva">Maptime HRVA</a>
+        <br>p.s. if you're with the City, it'd be awesome if you could geocode the data beforehand
+        <br>p.p.s also, it'd be great if your GIS data was open too!</h3>
+      <div id="popupfoot">
+        <a class="btn close agree">   Thanks, I Got It!   </a>
+      </div>
+    </div>
 
-    .leaflet-sidebar > .leaflet-control h2 {
-      font-size: 8pt;
-    }
-
-    .leaflet-sidebar > .leaflet-control h3 {
-      font-size: 10pt;
-      color: #fff;
-
-    }
-
-    .leaflet-sidebar > .leaflet-control a {
-      color: #fff;
-    }
-
-    .leaflet-sidebar > .leaflet-control hr {
-      display: block;
-      height: 1px;
-      border: 0;
-      border-top: 1px solid rgba(255, 255, 255, 0.4);
-      margin: 1em 0;
-      padding: 0;
-    }
-/*
-    .custom-popup .leaflet-popup-content-wrapper {
-      background: rgba(180,180,180, 0.8);
-      padding: 8px 24px;
-      font-family: "Lucida Console", Monaco, monospace;
-      font-size: 12pt;
-      color: #fff;
-      text-shadow: 1px 1px #000;
-      text-align: center;
-      line-height: 18px;
-    }
-    .custom-popup .leaflet-popup-content-wrapper a {
-      color: rgba(255, 255, 255, 0.1);
-    }
-    .custom-popup .leaflet-popup-tip-container {
-      margin: 0 auto;
-      width: 40px;
-      height: 20px;
-      position: relative;
-      overflow: hidden;
-    }
-    .custom-popup .leaflet-popup-tip {
-      width: 15px;
-      height: 15px;
-      padding: 1px;
-      margin: -8px auto 0;
-      -moz-transform: rotate(45deg);
-      -webkit-transform: rotate(45deg);
-      -ms-transform: rotate(45deg);
-      -o-transform: rotate(45deg);
-      transform: rotate(45deg);
-      background: rgba(180,180,180, 0.8);
-    }*/
-  </style>
-  <div id="sidebar">
-    <h1><b>Mapping the Redistricting of Virginia</b></h1>
-    <hr>
-    <h3>
-    The Commonwealth of Virginia is redrawing congressional districts to reduce unconstitutional
-    gerrymandering that packed black voters in the 3rd Congressional District and reduced their numbers
-    in other districts.
-    <hr>
-    This open-source application allows Virginians to browse the submissions that redraw the districts.
-<br>
-<br>
-Data from Virginia Division of Legislative Services (DLS)
-<br><h2>
-<a target="blank" href="http://redistricting.dls.virginia.gov/2010/RedistrictingPlans.aspx#31">Existing Congressional Districts</a>
-<br>
-<a target="blank" href="http://redistricting.dls.virginia.gov/2010/court-ordered-redistricting.aspx">Submitted Congressional Districts</a>
-</h2><hr>
-made with &#9829; by
-<br><a target="blank" href="http://www.code4hr.org">Code for Hampton Roads</a> + <a target="blank" href="https://twitter.com/maptimehrva">Maptime HRVA</a>
-  </h3>
   </div>
-  <div id="map"></div>
-  <script src="http://libs.cartocdn.com/cartodb.js/v3/cartodb.js"></script>
+  </div>
+
+  <div id="map">
+  </div>
+
+  <!-- include cartodb.js library -->
+  <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+
   <script>
-  function main() {
-  var map = L.map('map', {
-    center: [37.0344, -76.3479],
-    zoom: 14,
-  });
+    function main() {
+      cartodb.createVis('map', 'https://code4hr.cartodb.com/api/v2/viz/6f566526-798a-11e5-b4b5-0ecfd53eb7d3/viz.json', {
+          shareable: true,
+          title: true,
+          description: true,
+          search: false,
+          tiles_loader: true,
+          center_lat: 37.0344,
+          center_lon: -76.3479,
+          legends: true,
+          time_slider: true,
+          zoom: 14
 
-  var sidebar = L.control.sidebar('sidebar', {
-    closeButton: false,
-    position: 'left'
-  });
-  map.addControl(sidebar);
-  setTimeout(function() {
-    sidebar.show();
-  }, 500);
-
-  var CartoDB_DarkMatter = L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-      subdomains: 'abcd',
-      maxZoom: 19
-    }).addTo(map);
-
-  var Esri_WorldImagery = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-      attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-    });
-
-  var cdb_layers = {};
-  var cdb_url = 'https://jonahadkins.cartodb.com/viz/aed6eac2-78f9-11e5-912a-0e3a376473ab/viz.json';
-    cartodb.createLayer(map, cdb_url)
-      .addTo(map)
-
-      .on('done', function (layer) {
-          cdb_layers['crashes'] = layer;
-          addLayerControl();
-          })
-      .on('error', function (err) {
-      alert("some error occurred: " + err);
-  });
-}
-function addLayerControl() {
-var baseMaps = {
-    "Basemap": CartoDB_DarkMatter,
-    "Esri World Imagery": Esri_WorldImagery
-};
-var overlays = cdb_layers;
-var lyrs = L.control.layers(baseMaps, overlays, {autoZIndex:true}).addTo(map);
-lyrs.bringToFront();
-}
-  /*
-    var crimeStyle = {
-    radius: 8,
-    fillColor: "#ff7800",
-    color: "#000",
-    weight: 1,
-    opacity: 1,
-    fillOpacity: 0.8
-    };
-/*
-    var govenorStyle = {
-      color: "#ffffcc",
-      weight: 2,
-      opacity: 0.6,
-      fillOpacity: 0.1,
-      fillColor: "#ffffcc"
-    };
-
-    var intervenors1Style = {
-      color: "#c7e9b4",
-      weight: 2,
-      opacity: 0.6,
-      fillOpacity: 0.1,
-      fillColor: "#c7e9b4"
-    };
-    */
-    /*function popUp(feature, layer) {
-      layer.bindPopup("DISTRICT:" + String(feature.properties.DISTRICT));
+        })
+        .done(function(vis, layers) {
+          // layer 0 is the base layer, layer 1 is cartodb layer
+          // setInteraction is disabled by default
+          layers[1].setInteraction(true);
+          layers[1].on('featureOver', function(e, latlng, pos, data) {
+            cartodb.log.log(e, latlng, pos, data);
+          });
+          // you can get the native map to work with it
+          var map = vis.getNativeMap();
+          // now, perform any operations you need
+          // map.setZoom(3);
+          // map.panTo([50.5, 30.5]);
+        })
+        .error(function(err) {
+          console.log(err);
+        });
     }
-
-    var featureLayer = L.mapbox.featureLayer()
-    .loadURL('https://data.hampton.gov/resource/r23z-sjdf.json')
-    .addTo(map);
-
-  /*  var crime = new L.GeoJSON.AJAX("https://data.hampton.gov/resource/r23z-sjdf.json", {
-        style: crimeStyle,
-        onEachFeature: popUp
-    });
-  */
-  /*    govenor = new L.GeoJSON.AJAX("data/govenor.geojson", {
-        style: govenorStyle,
-        onEachFeature: popUp
-      }),
-      intervenors1 = new L.GeoJSON.AJAX("data/intervenors-1.geojson", {
-        style: intervenors1Style,
-        onEachFeature: popUp
-      });
-*/
-
-
-
-
-
-
+    window.onload = main;
   </script>
-  <a href="https://github.com/Code4HR/proposed-voting-districts">
-    <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/52760788cde945287fbb584134c4cbc2bc36f904/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67"
-    alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png">
-  </a>
+  <script>
+    $(document).ready(function() {
 
+      var id = '#dialog';
+
+      //Get the screen height and width
+      //var maskHeight = $(document).height();
+      //var maskWidth = $(window).width();
+
+      //Set heigth and width to mask to fill up the whole screen
+      //$('#mask').css({'width':maskWidth,'height':maskHeight});
+
+      //transition effect
+      //$('#mask').fadeIn(500);
+      //$('#mask').fadeTo("slow",0.9);
+
+      //Get the window height and width
+      var winH = $(window).height();
+      var winW = $(window).width();
+
+      //Set the popup window to center
+      $(id).css('top', winH / 2 - $(id).height() / 2);
+      $(id).css('left', winW / 2 - $(id).width() / 2);
+
+      //transition effect
+      $(id).fadeIn(2000);
+
+      //if close button is clicked
+      $('.window .close').click(function(e) {
+        //Cancel the link behavior
+        e.preventDefault();
+
+        $('#mask').hide();
+        $('.window').hide();
+      });
+
+      //if mask is clicked
+      //$('#mask').click(function () {
+      //$(this).hide();
+      //  $('.window').hide();
+      //  });
+
+    });
+  </script>
 </body>
+
 </html>
