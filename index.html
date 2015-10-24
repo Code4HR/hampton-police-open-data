@@ -30,7 +30,7 @@
     }
 
     .window h1 {
-      font-size: 14pt;
+      font-size: 18pt;
     }
 
     .window h2 {
@@ -47,8 +47,8 @@
     }
 
     #boxes #dialog {
-      width: 750px;
-      height: 300px;
+      width: 800px;
+      height: 500px;
       padding: 10px;
       box-sizing: border-box;
       border-color: #fff;
@@ -59,10 +59,11 @@
       color: #fff;
       text-align: center;
       text-shadow: 1px 1px #000;
-      background: rgba(200, 200, 200, 0.8);
+      background: rgba(200, 200, 200, 0.9);
       box-shadow: 0 1px 7px rgba(0, 0, 0, 0.65);
       -webkit-border-radius: 4px;
       border-radius: 4px;
+      z-index: 9999;
     }
 
     #popupfoot {
@@ -106,7 +107,7 @@
         <br>so you can see crimes in the context of location.</h2>
       <h3>made with &#9829; by
         <br><a target="blank" href="http://www.code4hr.org">Code for Hampton Roads</a> +
-        <a target="blank" href="https://twitter.com/maptimehrva">Maptime HRVA</a>
+        <a target="blank" href="https://twitter.com/maptimehrva">Maptime HRVA</a><br>
         <br>p.s. if you're with the City, it'd be awesome if you could geocode the data beforehand
         <br>p.p.s also, it'd be great if your GIS data was open too!</h3>
       <div id="popupfoot">
@@ -130,11 +131,11 @@
           title: true,
           description: true,
           search: false,
-          tiles_loader: true,
+          //tiles_loader: true,
           center_lat: 37.0344,
           center_lon: -76.3479,
-          legends: true,
-          time_slider: true,
+          //legends: true,
+          //time_slider: true,
           zoom: 14
 
         })
